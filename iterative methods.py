@@ -102,16 +102,16 @@ def CG(A, b, x, n):
         x = x + alpha * p
         r = r - alpha * Ap
 
+        # for convergence factor plot
+        new_res_norm = np.linalg.norm(A @ x - b)
+        ylineCon.append(new_res_norm / curr_res_norm)
+
         # Convergence criterion
         if (new_res_norm / np.linalg.norm(b)) < 0.1:
             return x, ylineRes, ylineCon
 
         beta = - np.dot(r, A @ p) / np.dot(p, A @ p)
         p = r + beta * p
-
-        # for convergence factor plot
-        new_res_norm = np.linalg.norm(A @ x - b)
-        ylineCon.append(new_res_norm / curr_res_norm)
     return x, ylineRes, ylineCon
 
 
