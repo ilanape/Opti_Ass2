@@ -26,7 +26,7 @@ def jacobi(A, b, x, w, n):
 
         # Convergence criterion
         if (new_res_norm / np.linalg.norm(b)) < 0.1:
-            return x, ylineRes, ylineCon
+            break
 
     return x, xline, ylineRes, ylineCon
 
@@ -54,7 +54,7 @@ def gauss_seidel(A, b, x, n):
 
         # Convergence criterion
         if (new_res_norm / np.linalg.norm(b)) < 0.1:
-            return x, ylineRes, ylineCon
+            break
 
     return x, xline, ylineRes, ylineCon
 
@@ -83,7 +83,7 @@ def SD(A, b, x, n):
 
         # Convergence criterion
         if (new_res_norm / np.linalg.norm(b)) < 0.1:
-            return x, ylineRes, ylineCon
+            break
 
     return x, xline, ylineRes, ylineCon
 
@@ -107,15 +107,16 @@ def CG(A, b, x, n):
         r = r - alpha * Ap
 
         # for convergence factor plot
-        new_res_norm = np.linalg.norm(A @ x - b)
+        new_res_norm = np.linalg.norm(r)
         ylineCon.append(new_res_norm / curr_res_norm)
 
         # Convergence criterion
         if (new_res_norm / np.linalg.norm(b)) < 0.1:
-            return x, ylineRes, ylineCon
+            break
 
         beta = - np.dot(r, A @ p) / np.dot(p, A @ p)
         p = r + beta * p
+
     return x, xline, ylineRes, ylineCon
 
 
