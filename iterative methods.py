@@ -6,13 +6,14 @@ import matplotlib.pyplot as plt
 
 def jacobi(A, b, x, w, n):
     # for plot
-    ylineRes, ylineCon = [], []
+    xline, ylineRes, ylineCon = [], [], []
 
     # dominant diagonal
     D = np.diagflat(np.diag(A))
 
     for i in range(n):
         # for residual plot
+        xline.append(i)
         curr_res_norm = np.linalg.norm(A @ x - b)
         ylineRes.append(curr_res_norm)
 
@@ -27,12 +28,12 @@ def jacobi(A, b, x, w, n):
         if (new_res_norm / np.linalg.norm(b)) < 0.1:
             return x, ylineRes, ylineCon
 
-    return x, ylineRes, ylineCon
+    return x, xline, ylineRes, ylineCon
 
 
 def gauss_seidel(A, b, x, n):
     # for plot
-    ylineRes, ylineCon = [], []
+    xline, ylineRes, ylineCon = [], [], []
 
     # lower triangular matrix L+D creation
     D = np.diagflat(np.diag(A))
@@ -40,6 +41,7 @@ def gauss_seidel(A, b, x, n):
 
     for i in range(n):
         # for residual plot
+        xline.append(i)
         curr_res_norm = np.linalg.norm(A @ x - b)
         ylineRes.append(curr_res_norm)
 
@@ -54,16 +56,17 @@ def gauss_seidel(A, b, x, n):
         if (new_res_norm / np.linalg.norm(b)) < 0.1:
             return x, ylineRes, ylineCon
 
-    return x, ylineRes, ylineCon
+    return x, xline, ylineRes, ylineCon
 
 
 def SD(A, b, x, n):
     # for plot
-    ylineRes, ylineCon = [], []
+    xline, ylineRes, ylineCon = [], [], []
 
     r = b - A @ x
     for i in range(n):
         # for residual plot
+        xline.append(i)
         curr_res_norm = np.linalg.norm(r)
         ylineRes.append(curr_res_norm)
 
@@ -82,17 +85,18 @@ def SD(A, b, x, n):
         if (new_res_norm / np.linalg.norm(b)) < 0.1:
             return x, ylineRes, ylineCon
 
-    return x, ylineRes, ylineCon
+    return x, xline, ylineRes, ylineCon
 
 
 def CG(A, b, x, n):
     # for plot
-    ylineRes, ylineCon = [], []
+    xline, ylineRes, ylineCon = [], [], []
 
     r = b - A @ x
     p = r
     for i in range(n):
         # for residual plot
+        xline.append(i)
         curr_res_norm = np.linalg.norm(r)
         ylineRes.append(curr_res_norm)
 
@@ -112,7 +116,7 @@ def CG(A, b, x, n):
 
         beta = - np.dot(r, A @ p) / np.dot(p, A @ p)
         p = r + beta * p
-    return x, ylineRes, ylineCon
+    return x, xline, ylineRes, ylineCon
 
 
 def create_plots(title, xline, ylineRes, ylineCon):
@@ -144,22 +148,19 @@ def main():
     b = np.random.rand(n)
     x = np.zeros(n)
 
-    # iterations x line
-    xline = [*list(range(0, 100))]
-
-    x, ylineRes, ylineCon = jacobi(A, b, x, 1, 100)
+    x, xline, ylineRes, ylineCon = jacobi(A, b, x, 1, 100)
     create_plots('Standart Jacobi method', xline, ylineRes, ylineCon)
 
-    x, ylineRes, ylineCon = jacobi(A, b, x, 0.1, 100)
+    x, xline, ylineRes, ylineCon = jacobi(A, b, x, 0.1, 100)
     create_plots('Jacobi method with weight = 0.1', xline, ylineRes, ylineCon)
 
-    x, ylineRes, ylineCon = gauss_seidel(A, b, x, 100)
+    x, xline, ylineRes, ylineCon = gauss_seidel(A, b, x, 100)
     create_plots('Gauss-Seidel method', xline, ylineRes, ylineCon)
 
-    x, ylineRes, ylineCon = SD(A, b, x, 100)
+    x, xline, ylineRes, ylineCon = SD(A, b, x, 100)
     create_plots('Steepest Descent method', xline, ylineRes, ylineCon)
 
-    x, ylineRes, ylineCon = CG(A, b, x, 100)
+    x, xline, ylineRes, ylineCon = CG(A, b, x, 100)
     create_plots('Conjugate Gradient Jacobi method', xline, ylineRes, ylineCon)
 
 
