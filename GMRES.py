@@ -9,14 +9,15 @@ def gmres(A, b, x, n):
     for i in range(n):
         # for residual plot
         xline.append(i)
-        curr_res_norm = np.linalg.norm(A * x - b)
+        r = b - A @ x
+        curr_res_norm = np.linalg.norm(r)
         ylineRes.append(curr_res_norm)
 
         # apply iteration
-        rkt = np.transpose(curr_res_norm)
-        Ar = A * curr_res_norm
+        rkt = np.transpose(r)
+        Ar = A @ r
         alpha = (rkt @ Ar) / (rkt @ np.transpose(A) @ Ar)
-        x = x + alpha * curr_res_norm
+        x = x + alpha * r
 
     # plot creation
     plt.semilogy(xline, ylineRes)
@@ -34,9 +35,6 @@ def main():
 
     gmres(A, b, x, 50)
 
-    print(b)
-    print()
-    print(x)
 
 if __name__ == '__main__':
     main()
